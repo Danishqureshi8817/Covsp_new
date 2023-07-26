@@ -1,5 +1,5 @@
-import { ImageBackground, KeyboardAvoidingView, SafeAreaView, StyleSheet, Text, View,TouchableOpacity,useWindowDimensions,Image } from 'react-native'
-import React,{useLayoutEffect} from 'react'
+import { ImageBackground, KeyboardAvoidingView, SafeAreaView, StyleSheet, Text, View,TouchableOpacity,useWindowDimensions,Image,Modal, FlatList,TouchableHighlight } from 'react-native'
+import React,{useLayoutEffect,useState,useEffect} from 'react'
 import { FloatingAction } from "react-native-floating-action";
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -18,6 +18,10 @@ const Friends = () => {
 
   const navigation = useNavigation();
  const window =useWindowDimensions()
+
+const [visible, setVisible] = useState(false)
+
+
   const Divider = () => <View style={styles.divider} />;
 
   //Headeer Icons
@@ -76,9 +80,9 @@ const Friends = () => {
 
   const actions = [
     {
-      text: "Display QR Code",
-      icon: require("../../assets/images/qrcode.png"),
-      name: "qr_code",
+      text: "Add Friend",
+      icon: require("../../assets/images/add.png"),
+      name: "Add",
       position: 1,
       color:'#0092bb'
     },
@@ -92,7 +96,7 @@ const Friends = () => {
   
   ];
 
-
+const devices = [['danish',1258],['mummy',2589],['abhisehk',3692]]
 
 
   return (
@@ -105,6 +109,49 @@ const Friends = () => {
     <Text style={styles.textMain}>You have no whitelisted friends</Text>
     </View>
     <Image source={require('../../assets/images/friends.png')} style={styles.mainImg} />
+   
+    
+    <Modal
+    transparent={true}
+    visible={visible}
+    >
+    <View style={{backgroundColor:'#000000aa',flex:1,alignItems:'center'}}>
+     
+    <View style={{backgroundColor:"#d7f3f4",borderRadius:responsiveWidth(3),position:'relative',marginTop:window.height*0.2}}>
+    <Icon  name="close" size={responsiveWidth(6)} onPress={()=>{setVisible(false)}} color="#000" style={{ marginRight: responsiveWidth(2),position:'absolute',right:0 }} />
+     <View style={{padding:responsiveWidth(5),marginTop:responsiveWidth(1),width:window.width*0.9}}>
+    <Text style={[styles.textMain,{alignSelf:'center',marginBottom:responsiveWidth(2)}]} >Add Your Friend</Text>
+
+     <FlatList
+       data={devices}
+        renderItem={(item)=>{
+          console.log("Frind flatlist",item)
+      return (   <>
+        <TouchableHighlight style={{borderRadius:responsiveWidth(0.5),borderColor:'#000000aa'}} >
+        <Text>{item.item[0]}</Text>
+       </TouchableHighlight>
+       </>)}}
+        ListEmptyComponent={<Text>No Data found</Text>}
+        showsVerticalScrollIndicator={false}
+
+     />
+       {/* <TouchableOpacity style={{borderRadius:responsiveWidth(0.5),borderColor:'#000000aa'}} >
+        <Text>Denish Qureshi</Text>
+       </TouchableOpacity> */}
+
+      
+
+    </View>
+
+    </View>
+
+    </View>
+   
+
+    </Modal>
+
+
+
 
     <FloatingAction
  showBackground={false}
@@ -113,7 +160,11 @@ const Friends = () => {
     color='#0092bb'
 
     onPressItem={name => {
-      console.log(`selected button: ${name}`);
+      if(name==='Add'){
+        console.log(`selected button: Add`);
+        setVisible(true)
+      }
+     
     }}
   />
 
