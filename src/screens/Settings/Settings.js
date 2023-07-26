@@ -49,7 +49,7 @@ useEffect( () => {
 
     const newName =await BluetoothSerial.setAdapterName('covsp')
       await setLoginStatus(false)
-
+      await BluetoothSerial.enable()
       await console.log("NEw Device name",newName)
     
 
@@ -72,7 +72,7 @@ useEffect( () => {
     Alert.alert(
        
       'You want to delete your account',
-      'Please click delete button',
+      'Please click delete',
       [
         {
           text: 'Cancel',
@@ -107,6 +107,7 @@ useEffect( () => {
         text: 'Uninfected',
         onPress: async()=>{
           const newNameChnge =await BluetoothSerial.setAdapterName(userInfo?.name)
+          await BluetoothSerial.disable()
          await console.log("Cancel",newNameChnge)
         }
       },

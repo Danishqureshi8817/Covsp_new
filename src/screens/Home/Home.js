@@ -22,6 +22,19 @@ const Home = (props) => {
   const [scanDevices, setScanDevices] = useRecoilState(scanDevice);
   const Divider = () => <View style={styles.divider} />;
 
+useEffect(() => {
+  
+  setTimeout(() => {
+    console.log("opensetting")
+    openSetting()
+  }, 4000);
+
+
+}, [])
+
+
+
+
 //Headeer Icons
   useLayoutEffect(() => {
 
@@ -32,7 +45,7 @@ const Home = (props) => {
       (
 
         <View style={{flexDirection:'row'}} >
-       <TouchableOpacity onPress={() => {  }}><Icon  name="play-circle" size={responsiveWidth(6)} color="#d7f3f4" style={{ marginRight: responsiveWidth(2) }} /></TouchableOpacity> 
+       <TouchableOpacity onPress={() => { openSetting() }}><Icon  name="play-circle" size={responsiveWidth(6)} color="#d7f3f4" style={{ marginRight: responsiveWidth(2) }} /></TouchableOpacity> 
        {/* <TouchableOpacity onPress={() => {  }}><MaterialIcons name="dots-vertical" size={responsiveWidth(6)} color="#d7f3f4" style={{ marginRight: responsiveWidth(3) }} /></TouchableOpacity> */}
         
        <Menu  >
@@ -85,27 +98,34 @@ const Home = (props) => {
   var devices;
  //its a function that  contain bluetooth scaning functionality
 
- const Bluetooth =async () => {
 
-  
-  //first-it is checking multiple permission,need for scanning
+ const openSetting =async()=>{
+    //first-it is checking multiple permission,need for scanning
 
  await checkMultiple([PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION, PERMISSIONS.ANDROID.BLUETOOTH_SCAN]).then((statuses) => {
-    console.log('Location ', statuses[PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION]);
-    console.log('Scan ', statuses[PERMISSIONS.ANDROID.BLUETOOTH_SCAN]);
+  console.log('Location ', statuses[PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION]);
+  console.log('Scan ', statuses[PERMISSIONS.ANDROID.BLUETOOTH_SCAN]);
+
+  console.log("android permission..",Platform.OS)
+
  
-    console.log("android permission..",Platform.OS)
 
-    if(statuses[PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION]!= 'granted' ){     
-       ToastAndroid.show('Please allowed all permissions !', ToastAndroid.LONG);
-    openSettings().catch(() => console.warn('cannot open settings'));}
-    // if(statuses[PERMISSIONS.ANDROID.BLUETOOTH_SCAN] != 'granted')
-    // {}
+  if(statuses[PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION]!= 'granted' ){     
+    ToastAndroid.show('Please allowed all permissions !', ToastAndroid.LONG);
+ openSettings().catch(() => console.warn('cannot open settings'));}
+  // if(statuses[PERMISSIONS.ANDROID.BLUETOOTH_SCAN] != 'granted')
+  // {}
 
-  });
+});
+ }
 
 
 
+ const Bluetooth =async () => {
+
+
+
+    openSetting()
 
 
 
@@ -126,7 +146,7 @@ await setusersBle([])
      //Error
     });
 
-    setScan(false)
+    await setScan(false)
 
 
   console.log("Devices...scaning ")

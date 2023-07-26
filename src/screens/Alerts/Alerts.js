@@ -113,6 +113,7 @@ const renderItem = (props) => {
   return (
     <Item
       item={props.item[0]}
+      num={props.index}
       onPress={() => {
         deleteDevice(props.item[1],props.item[0])
         setSelectedId(props.item[0])
@@ -124,7 +125,7 @@ const renderItem = (props) => {
   );
 };
 
-const Item = ({item, onPress}) => {
+const Item = ({item, onPress,num}) => {
   
   // console.log("flatlist item",)
   
@@ -146,7 +147,7 @@ const Item = ({item, onPress}) => {
 
   <View style={{flexDirection:'row',alignItems:'center'}} >
    <Text style={{color:'#000',fontSize:responsiveFontSize(1.9)}} >You were exposed during {`(${item})`} </Text> 
-   <Text style={{color:'#000',fontSize:responsiveFontSize(1.9),fontWeight:'bold'}} >3/25.</Text>
+   <Text style={{color:'#000',fontSize:responsiveFontSize(1.9),fontWeight:'bold'}} >{num+1}/{finalList.length}.</Text>
    </View>
    <Text style={{color:'#000',fontSize:responsiveFontSize(1.9),fontWeight:'bold'}} >Please self-quarantine.</Text>
 
