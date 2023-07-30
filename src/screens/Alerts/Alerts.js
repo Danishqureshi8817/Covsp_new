@@ -1,19 +1,21 @@
 import { useWindowDimensions,ScrollView,Alert, ImageBackground, KeyboardAvoidingView, SafeAreaView, StyleSheet, Text, TouchableOpacity, View,FlatList, ActivityIndicator,ToastAndroid, Platform } from 'react-native'
-import React,{useState,useLayoutEffect} from 'react'
+import React,{useState,useLayoutEffect,useEffect} from 'react'
 import { responsiveFontSize, responsiveWidth } from 'react-native-responsive-dimensions'
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation,useFocusEffect,useIsFocused } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Menu, MenuOptions,MenuOption,MenuTrigger,MenuProvider} from 'react-native-popup-menu';
 import { scanDevice} from '../../store/recoil'
 import { useRecoilState } from 'recoil'
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 const Alerts = () => {
   const navigation = useNavigation();
   const window = useWindowDimensions()
   const [selectedId, setSelectedId] = useState(-1);
-  
+  const [prvDevices, setPrvDevices] = useState(null)
+  const focus = useIsFocused()
 
   const [scanDevices, setScanDevices] = useRecoilState(scanDevice);
 
@@ -21,6 +23,26 @@ const Alerts = () => {
 
   const Divider = () => <View style={styles.divider} />;
 
+  const fetchPrvDevices = async()=>{
+    let prv = await AsyncStorage.getItem('Devices')
+ let prvD = await JSON.parse(prv)
+ setPrvDevices(prvD)
+  }
+
+
+
+  useEffect(() => {
+    console.log("FocusEffect")
+    fetchPrvDevices()
+  }, [focus])
+
+//   useFocusEffect(() => {
+
+// console.log("FocusEffect")
+// fetchPrvDevices()
+
+//       });
+  
 
   //Headeer Icons
   useLayoutEffect(() => {
@@ -96,6 +118,40 @@ for(let i=0; i<filterDevice?.length;i++){
 }
 console.log("finalList",finalList)
 
+console.log("friend with covsp in prvDevice Alert",prvDevices)
+
+var  frndDv = []
+
+for( var val of finalList){
+  var i;
+  console.log("friend with covsp",val)
+
+  
+for(i=0;i<prvDevices?.length;i++){
+
+if(val[1]==prvDevices[i][1]){
+  // console.log("friend with covsp in forr prvDevice",prvDevices[i][1],val[1])
+  // frndDv.push(val)
+
+  break;
+  }
+
+}
+
+if(i===prvDevices?.length){
+
+  console.log("friend with covsp in i value",i,prvDevices?.length)
+  frndDv.push(val)
+}
+
+
+}
+
+console.log('frvDv Alert',frndDv)
+
+
+
+
 const deleteDevice = async (id,name) => {
   console.log('delete calling....',id,name)
   let listRemoved=finalList.filter((val)=>{
@@ -105,6 +161,13 @@ const deleteDevice = async (id,name) => {
   console.log('delete list calling....',listRemoved)
 
 }
+
+let newFinalList
+
+    newFinalList=frndDv.length==0?finalList:frndDv
+
+console.log("New finalList Alert",newFinalList)
+
 
 
 const renderItem = (props) => {
@@ -184,7 +247,7 @@ const EmptyText = () =>{
  
 
     <FlatList
-        data={finalList}
+        data={newFinalList}
         renderItem={renderItem}
         ListEmptyComponent={EmptyText}
         showsVerticalScrollIndicator={false}

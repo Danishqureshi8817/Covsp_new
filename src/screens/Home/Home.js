@@ -11,8 +11,9 @@ import { WINDOWS } from 'nativewind/dist/utils/selector';
 import BluetoothSerial from '@infobiotech/react-native-bluetooth-serial-next'
 import {checkMultiple, PERMISSIONS, request,openSettings} from 'react-native-permissions';
 import RNAndroidLocationEnabler from 'react-native-android-location-enabler';
-import { scanDevice} from '../../store/recoil'
+import { scanDevice,deviceWithoutFrnd} from '../../store/recoil'
 import { useRecoilState } from 'recoil'
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Home = (props) => {
   const navigation = useNavigation();
@@ -20,6 +21,11 @@ const Home = (props) => {
   const [scan, setScan] = useState(true)
   const [usersBle, setusersBle] = useState([])
   const [scanDevices, setScanDevices] = useRecoilState(scanDevice);
+ 
+
+  const [frndDvS, setFrndDvS] = useState([])
+
+
   const Divider = () => <View style={styles.divider} />;
 
 useEffect(() => {
@@ -130,6 +136,7 @@ useEffect(() => {
 
 
 await setusersBle([])
+await setFrndDvS([])
 
 //it shows the popup to turn on the Bluetooth
   await BluetoothSerial.requestEnable();
@@ -196,12 +203,24 @@ await setusersBle([])
 
  //By this Stop the scaning
  await BluetoothSerial.cancelDiscovery();
+
+
+
+
 }
 
 
 // console.log("length",devices)
 
+
+
+
+
+// setFrndDvS(frndDv)
+
 setScanDevices(usersBle)
+// setScanDevices(frndDvS)
+
 console.log("setScanDevices..",scanDevices)
 console.log("userble..",usersBle)
 

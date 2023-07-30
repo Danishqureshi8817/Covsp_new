@@ -1,4 +1,4 @@
-import { ImageBackground, KeyboardAvoidingView, SafeAreaView, StyleSheet, Text, View,TouchableOpacity,useWindowDimensions,Image,Modal, FlatList,TouchableHighlight } from 'react-native'
+import { ImageBackground, KeyboardAvoidingView, SafeAreaView, StyleSheet, Text, View,TouchableOpacity,useWindowDimensions,Image,Modal, FlatList,ActivityIndicator } from 'react-native'
 import React,{useLayoutEffect,useState,useEffect} from 'react'
 import { FloatingAction } from "react-native-floating-action";
 import { useNavigation } from '@react-navigation/native';
@@ -23,6 +23,23 @@ const [availableFriend, setAvailableFriend] = useState(null)
 const [refres, setRefres] = useState(false)
 const [clear, setClear] = useState(false)
 const [usersBle, setusersBle] = useState([])
+const [userInfo, setUserInfo] = useState(null)
+
+  //Fetch Login User Details
+  const userFetch = async ()=>{
+    try {
+      const value = await AsyncStorage.getItem('userDetails');
+      if (value !== null) {
+         var dat = JSON.parse(value)
+        await setUserInfo(dat)
+        console.log("userData friend",userInfo)
+      }
+    } catch (e) {
+     console.log("ERRRO AYNC login",e)
+    }
+  }
+
+
 
 
   const Divider = () => <View style={styles.divider} />;
@@ -72,6 +89,8 @@ const bleSearch = async()=>{
        //Error
       });
   
+      await setVisible(true)
+
       // await setScan(false)
   
   
@@ -200,9 +219,9 @@ console.log("userble..Friend",usersBle)
       color:'#0092bb'
     },
     {
-      text: "Scan QR Code",
+      text: "Request To Add",
       icon: require("../../assets/images/qrscanner.png"),
-      name: "qr_scanner",
+      name: "Request",
       position: 2,
       color:'#0092bb'
     },
@@ -255,6 +274,8 @@ const addDevices = async(name,id) =>{
   let lt=await AsyncStorage.getItem('Devices')
   let ltt = await JSON.parse(lt)
   await console.log('addDevices.. Lttt',ltt)
+
+  setVisible(false)
   
 
 
@@ -272,6 +293,7 @@ console.log("main scren frinds",props.item)
         <View style={{flexDirection:'row',alignItems:'center',justifyContent:'flex-start',paddingLeft:responsiveWidth(2),gap:responsiveWidth(2)}} >
         <Text style={{fontSize:responsiveFontSize(1.9),fontWeight:'500'}}>{(props?.index)+1}.</Text>
         <Text style={{textTransform:'capitalize',fontSize:responsiveFontSize(1.9),}}>{props?.item[0]}</Text>
+        <Text style={{fontSize:responsiveFontSize(1.9),}}>{props?.item[1]}</Text>
         </View>
       
     </View>
@@ -288,6 +310,7 @@ const renderItem = (props) => {
   return (
     <Item
       item={props.item[0]}
+      id={props.item[1]}
       num={props.index}
       onPress={() => {
   
@@ -301,7 +324,7 @@ const renderItem = (props) => {
   );
 };
 
-const Item = ({item, onPress,num}) => {
+const Item = ({item, onPress,num,id}) => {
   
   // console.log("flatlist item",)
   
@@ -310,6 +333,7 @@ const Item = ({item, onPress,num}) => {
   
     <TouchableOpacity onPress={onPress} style={{padding:responsiveWidth(2),borderWidth:1,marginBottom:responsiveWidth(2),borderColor:'#0092bb',borderRadius:responsiveWidth(2),flexDirection:'row',justifyContent:'space-between'}} >
     <Text style={{fontWeight:'500',textTransform:'capitalize'}} >{item}</Text>
+    <Text style={{fontWeight:'500',textTransform:'capitalize'}} >{id}</Text>
     <Text style={styles.textMain}>Click To Add</Text>
 
     </TouchableOpacity>
@@ -323,8 +347,12 @@ const Item = ({item, onPress,num}) => {
 
 const EmptyText = () =>{
   return (
-    <View style={{flex:1,}} >
+    <View style={{flex:1,gap:responsiveWidth(2)}} >
       <Text style={{fontSize:responsiveFontSize(2.1),fontWeight:'bold',alignSelf:'center'}} >No Devices Available</Text>
+      <Text style={{fontSize:responsiveFontSize(2.1),fontWeight:'bold',alignSelf:'center'}} >Please Wait</Text>
+
+      <ActivityIndicator size='large' color={'#0092bb'} />
+      
     </View>
   )
 }
@@ -372,9 +400,12 @@ const EmptyMain = () =>{
     onPressItem={ async(name )=> {
       if(name==='Add'){
         console.log(`selected button: Add`);
-       await bleSearch()
-        setVisible(true)
+        bleSearch()
+        
      
+      }
+      else if(name==='Request'){
+
       }
      
     }}
