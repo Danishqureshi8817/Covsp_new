@@ -94,7 +94,11 @@ useEffect( () => {
         },
         
   
-      ]
+      ],
+         {
+          cancelable:true,
+          onDismiss: () => console.log("cancel alert setting")
+         }
   
      )
 
@@ -126,7 +130,11 @@ useEffect( () => {
       },
       
 
-    ]
+    ],
+    {
+     cancelable:true,
+     onDismiss: () => console.log("cancel alert infected")
+    }
 
    )
   }
