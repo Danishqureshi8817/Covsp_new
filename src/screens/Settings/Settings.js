@@ -8,6 +8,8 @@ import { onboardingState,loginState } from '../../store/recoil'
 import { useRecoilState } from 'recoil'
 import { useNavigation } from '@react-navigation/native';
 import Toast from 'react-native-simple-toast';
+import styles from './style';
+
 
 const Settings = () => {
 
@@ -34,6 +36,7 @@ const Settings = () => {
     }
   }
 
+
 useEffect( () => {
   //use to fetch user details
   userFetch()
@@ -43,7 +46,7 @@ useEffect( () => {
 
   const Divider = () => <View style={styles.divider} />;
 
-
+//Marked Infected 
   const makeInfected = async() =>{
        
 
@@ -52,9 +55,10 @@ useEffect( () => {
       await BluetoothSerial.enable()
       await console.log("NEw Device name",newName)
     
-
   }
 
+
+//Delete Account function
   const deleteAccount = () =>{
 
     const signOut = async() =>{
@@ -94,9 +98,10 @@ useEffect( () => {
   
      )
 
-
   }
 
+
+  //By this will  open a popup, for slecting infected or not
   const markInfect = () =>{
    Alert.alert(
        
@@ -128,7 +133,7 @@ useEffect( () => {
 
    
 
-
+//Main UI
 
   return (
 
@@ -142,11 +147,11 @@ useEffect( () => {
           <Text style={styles.username}>{userInfo?.name}</Text>
         </View>
 
-        <TouchableHighlight onPress={()=>{markInfect()}} underlayColor="#F0F0F0">
+        <TouchableHighlight onPress={()=>{markInfect()}} underlayColor="#ecf0f1">
           <Text style={styles.covid} >Mark as COVID-19 Infected</Text>
         </TouchableHighlight>
 
-        <TouchableHighlight onPress={()=>{deleteAccount()}} underlayColor="#F0F0F0">
+        <TouchableHighlight onPress={()=>{deleteAccount()}} underlayColor="#ecf0f1">
           <Text style={styles.deleteAcc} >Deleted My Account</Text>
         </TouchableHighlight>
 
@@ -172,14 +177,6 @@ useEffect( () => {
 
         </View>
 
-        {/* <TouchableHighlight onPress={()=>{console.warn("covid")}} underlayColor="#F0F0F0">
-          <Text style={styles.covid} >Mark as COVID-19 Infected</Text>
-        </TouchableHighlight>
-
-        <TouchableHighlight onPress={()=>{console.warn("delete")}} underlayColor="#F0F0F0">
-          <Text style={styles.deleteAcc} >Deleted My Account</Text>
-        </TouchableHighlight> */}
-
      
        </View>
 
@@ -193,17 +190,6 @@ useEffect( () => {
           <Text style={styles.user}>Send Feedback</Text>
           <Text style={styles.username}>Report technical issues or suggest new furtures</Text>
         </View>
-
-       
-
-        {/* <TouchableHighlight onPress={()=>{console.warn("covid")}} underlayColor="#F0F0F0">
-          <Text style={styles.covid} >Mark as COVID-19 Infected</Text>
-        </TouchableHighlight>
-
-        <TouchableHighlight onPress={()=>{console.warn("delete")}} underlayColor="#F0F0F0">
-          <Text style={styles.deleteAcc} >Deleted My Account</Text>
-        </TouchableHighlight> */}
-
      
        </View>
 
@@ -215,64 +201,3 @@ useEffect( () => {
 
 export default Settings
 
-const styles = StyleSheet.create({
-  mainContainer:{
-    flex:1,
-    gap:responsiveWidth(4),
-    // backgroundColor:'#d7f3f4',
-    
-  },
-  accountContainer:{
-    
-    gap:responsiveWidth(4),
-    marginTop:responsiveWidth(8)
-  },
-  divider: {
-    height: StyleSheet.hairlineWidth,
-    backgroundColor: "#7F8487",
-  },
-  accountText:{
-    color:'#0092bb',
-    fontSize:responsiveFontSize(1.9),
-    fontWeight:'bold',
-    marginLeft:responsiveWidth(5),
-  },
-  user:{
-    color:'#000',
-    fontSize:responsiveFontSize(1.9),
-    marginLeft:responsiveWidth(5),
-    
-  },
-  username:{
-   fontSize:responsiveFontSize(1.9),
-   marginLeft:responsiveWidth(5),
-  },
-  covid:{
-    color:'#000',
-    fontSize:responsiveFontSize(1.9),
-    paddingVertical:responsiveWidth(2),
-    marginLeft:responsiveWidth(5),
-  },
-  deleteAcc:{
-    color:'#000',
-    fontSize:responsiveFontSize(1.9),
-    marginLeft:responsiveWidth(5),
-  },
-  alertContainer:{
-    gap:responsiveWidth(4),
-    marginTop:responsiveWidth(1)
-  },
-  switchContainer:{
-   alignItems:'center',
-   flexDirection:'row',
-   justifyContent:'space-between'
-
-  },
-  switchText:{
-    color:'#000',
-    fontSize:responsiveFontSize(1.9),
-    marginLeft:responsiveWidth(5),
-  }
-
-
-})

@@ -14,6 +14,8 @@ import RNAndroidLocationEnabler from 'react-native-android-location-enabler';
 import { scanDevice,deviceWithoutFrnd} from '../../store/recoil'
 import { useRecoilState } from 'recoil'
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import styles from './style';
+
 
 const Home = (props) => {
   const navigation = useNavigation();
@@ -225,22 +227,6 @@ console.log("setScanDevices..",scanDevices)
 console.log("userble..",usersBle)
 
 
-// var str = []
-// for(let i=0;i<usersBle.length;i++){
-//   str.push(JSON.stringify(usersBle[i]))
-// }
- 
-// var filterDevice = []
-// filterDevice = str.filter((val,i)=> str.indexOf(val)===i);
-// console.log("filterDevices ",filterDevice)
-
-// var finalList = []
-// for(let i=0; i<filterDevice.length;i++){
-//   finalList.push(JSON.parse(filterDevice[i]))
-// }
-// console.log("finalList ",finalList)
-
-
   return (
    <View style={styles.container}>
     <KeyboardAvoidingView behavior="padding">
@@ -249,11 +235,10 @@ console.log("userble..",usersBle)
         
     <Image source={require('../../assets/images/scaningGif.gif')} style={styles.mainImg} /> }
 
-   
-     {/* <Text> {isScanning ? 'Scanning...' : 'Scan Bluetooth Devices'}</Text> */}
+ 
 
   <TouchableOpacity style={[styles.floatingButton,{right:scan?Dimensions.get('window').width*0.03:Dimensions.get('window').width*0.04,}]} onPress={()=>{Bluetooth()}} >
-  {/* <Icon onPress={()=>{}} name="play-circle" size={responsiveWidth(17)} color="#0092bb"  /> */}
+
 { scan ? <Image source={require('../../assets/images/scanstart.png')} style={{width:responsiveWidth(18),height:responsiveHeight(10),resizeMode:'contain'}}/> :
 <Image source={require('../../assets/images/scanstop.png')} style={{width:responsiveWidth(16),height:responsiveHeight(10),resizeMode:'contain'}}/>}
   </TouchableOpacity>
@@ -265,34 +250,3 @@ console.log("userble..",usersBle)
 
 export default Home
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor:'#d7f3f4',
-    // alignItems: 'center',
-    position:'relative'
-
-  },
-  mainImg:{
-    width:responsiveWidth(130),
-    height:responsiveHeight(60),
-    resizeMode:'contain',
-    alignSelf:'center'
-  },
-  floatingButton:{ 
-  
-    marginRight: responsiveWidth(2),
-    position:'absolute',
-    // right:Dimensions.get('window').width*0.03,
-    top:Dimensions.get('window').height*0.74,
-  
-  
-    
-  },
-  divider: {
-    height: StyleSheet.hairlineWidth,
-    backgroundColor: "#7F8487",
-  },
-
-    
-})

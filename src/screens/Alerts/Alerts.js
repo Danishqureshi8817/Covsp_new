@@ -8,6 +8,7 @@ import { Menu, MenuOptions,MenuOption,MenuTrigger,MenuProvider} from 'react-nati
 import { scanDevice} from '../../store/recoil'
 import { useRecoilState } from 'recoil'
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import styles from './style';
 
 
 const Alerts = () => {
@@ -262,19 +263,3 @@ const EmptyText = () =>{
 
 export default Alerts
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-     padding: 20,
-    width: '100%',
-   position:'relative',
-    // alignSelf: 'center',
-    alignItems: 'center',
-    // justifyContent: 'center',
-  },
-  divider: {
-    height: StyleSheet.hairlineWidth,
-    backgroundColor: "#7F8487",
-  },
-    
-})
