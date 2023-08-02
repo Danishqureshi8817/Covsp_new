@@ -17,6 +17,7 @@ import {FloatingAction} from 'react-native-floating-action';
 import {useNavigation} from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import QRCode from 'react-native-qrcode-svg';
 
 import {
   responsiveFontSize,
@@ -48,12 +49,14 @@ const Friends = () => {
   const window = useWindowDimensions();
 
   const [visible, setVisible] = useState(false);
+  const [visibleQRCode, setVisibleQRCode] = useState(false);
   const [deviceStore, setDeviceStore] = useState([]);
   const [availableFriend, setAvailableFriend] = useState(null);
   const [refres, setRefres] = useState(false);
   const [clear, setClear] = useState(false);
   const [usersBle, setusersBle] = useState([]);
   const [userInfo, setUserInfo] = useState(null);
+
 
   //Fetch added frinds
   useEffect(() => {
@@ -231,13 +234,28 @@ const Friends = () => {
       color: '#0092bb',
     },
     {
-      text: 'Request To Add',
+      text: 'QR Code',
       icon: require('../../assets/images/qrscanner.png'),
-      name: 'Request',
+      name: 'qrcode',
       position: 2,
       color: '#0092bb',
     },
   ];
+
+
+ 
+const  qrGenerate = async() => {
+  await userFetch()
+
+  // await BluetoothSerial.setAdapterName(userName)
+
+
+//  await console.log("bleAdreess",userName)
+await setVisibleQRCode(true)
+}
+
+console.log("bleAdreessII",userInfo)
+
 
   const devices = [
     ['danish', 1258],
@@ -451,7 +469,8 @@ const Friends = () => {
             if (name === 'Add') {
               console.log(`selected button: Add`);
               bleSearch();
-            } else if (name === 'Request') {
+            } else if (name === 'qrcode') {
+                qrGenerate()
             }
           }}
         />
@@ -511,6 +530,86 @@ const Friends = () => {
           </View>
         </Modal>
         {/* Model */}
+
+                {/* Model QR Code */}
+       <Modal transparent={true} visible={visibleQRCode}>
+          <View
+            style={{
+              backgroundColor: '#000000aa',
+              flex: 1,
+              alignItems: 'center',
+              // padding: responsiveWidth(10),
+              justifyContent:'center'
+            }}>
+            <View
+              style={{
+                backgroundColor: '#d7f3f4',
+                borderRadius: responsiveWidth(3),
+                position: 'relative',
+                // marginTop: window.height * 0.1,
+              }}>
+              <Icon
+                name="close"
+                size={responsiveWidth(6)}
+                onPress={() => {
+                  setVisibleQRCode(false);
+                }}
+                color="#000"
+                style={{
+                  marginRight: responsiveWidth(2),
+                  position: 'absolute',
+                  right: 0,
+                }}
+              />
+           
+              <View
+                style={{
+                  // padding: responsiveWidth(5),
+                  // marginTop: responsiveWidth(1),
+                  width: window.width * 0.9,
+                  height: window.height * 0.3,
+                  // alignSelf:'center'
+                  justifyContent:'center',
+                  alignItems:'center'
+                }}>
+               
+
+
+                  <QRCode
+                    value={userInfo?.email}
+                     size={responsiveWidth(40)}
+                    
+                    />
+              </View>
+              <Text
+                  style={[
+                    styles.textMain,
+                    
+                  ]}>
+               Your QR code is private. If you share it with
+                </Text>
+                <Text
+                  style={[
+                    styles.textMain,
+                   
+                  ]}>
+              someone they can scan it with their Covsp
+                </Text>
+                <Text
+                  style={[
+                    styles.textMain,
+                    { marginBottom:responsiveWidth(5)},
+                   
+                  ]}>
+               camera to add you as a close friend
+                </Text>
+
+
+
+            </View>
+          </View>
+        </Modal>
+        {/* Model QR Code*/}
       </KeyboardAvoidingView>
     </View>
   );

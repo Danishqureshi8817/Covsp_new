@@ -2,13 +2,15 @@ import { StyleSheet, Text, View,TouchableHighlight,Switch,Alert,Platform} from '
 import React,{useState,useEffect} from 'react'
 import { responsiveFontSize, responsiveWidth } from 'react-native-responsive-dimensions'
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import BluetoothSerial from '@infobiotech/react-native-bluetooth-serial-next'
+import BluetoothSerial, { device } from '@infobiotech/react-native-bluetooth-serial-next'
 
 import { onboardingState,loginState } from '../../store/recoil'
 import { useRecoilState } from 'recoil'
 import { useNavigation } from '@react-navigation/native';
 import Toast from 'react-native-simple-toast';
 import styles from './style';
+import DeviceInfo from 'react-native-device-info';
+
 
 
 const Settings = () => {
@@ -24,6 +26,8 @@ const Settings = () => {
 
   //Fetch Login User Details
   const userFetch = async ()=>{
+ 
+
     try {
       const value = await AsyncStorage.getItem('userDetails');
       if (value !== null) {

@@ -2,7 +2,7 @@ import { KeyboardAvoidingView, SafeAreaView, StyleSheet,
   Text, View,Image, TouchableOpacity,useWindowDimensions,Dimensions, ActivityIndicator,ToastAndroid, Platform } from 'react-native'
 import React,{useEffect,useState,useLayoutEffect} from 'react'
 import {  responsiveWidth, responsiveHeight, responsiveFontSize,} from 'react-native-responsive-dimensions';
-import BleManager from 'react-native-ble-manager';
+
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -15,6 +15,7 @@ import { scanDevice,deviceWithoutFrnd} from '../../store/recoil'
 import { useRecoilState } from 'recoil'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import styles from './style';
+import {displayNotifications,nextNotification} from '../../utils/notifee'
 
 
 const Home = (props) => {
@@ -23,7 +24,7 @@ const Home = (props) => {
   const [scan, setScan] = useState(true)
   const [usersBle, setusersBle] = useState([])
   const [scanDevices, setScanDevices] = useRecoilState(scanDevice);
- 
+
 
   const [frndDvS, setFrndDvS] = useState([])
 
@@ -174,7 +175,10 @@ await setFrndDvS([])
   console.log("Devices....",devices)
 
   // console.log("Adapter-Name....",newName)
-
+ 
+  if(devices){
+ displayNotifications()
+  }
 
 
 
@@ -214,14 +218,15 @@ await setFrndDvS([])
 
 // console.log("length",devices)
 
-
-
-
+// if(!scan){
+//   displayNotifications()
+// }
 
 // setFrndDvS(frndDv)
 
 setScanDevices(usersBle)
 // setScanDevices(frndDvS)
+
 
 console.log("setScanDevices..",scanDevices)
 console.log("userble..",usersBle)

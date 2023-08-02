@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useState,useMemo} from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/Ionicons';
 
@@ -12,11 +12,9 @@ import Alerts from '../screens/Alerts/Alerts';
 
 import { scanDevice} from '../store/recoil'
 import { useRecoilState } from 'recoil'
-import {
-  responsiveWidth,
-  responsiveHeight,
-  responsiveFontSize,
-} from 'react-native-responsive-dimensions';
+import {responsiveWidth, responsiveHeight,responsiveFontSize,} from 'react-native-responsive-dimensions';
+import { displayNotifications } from '../utils/notifee';
+
 
 
 // it is BottomTabs  object
@@ -26,6 +24,8 @@ function BottomTabNavigator() {
 
   
   const [scanDevices, setScanDevices] = useRecoilState(scanDevice);
+  const [noti, setNoti] = useState(false)
+ 
 
   var str = []
 for(let i=0;i<scanDevices?.length;i++){
@@ -43,8 +43,11 @@ for(let i=0; i<filterDevice?.length;i++){
 // console.log("finalList",finalList)
 
 
-  console.log("tabss sice devices",finalList?.length)
+  console.log("tabss size devices",finalList?.length,scanDevices?.length)
 
+
+  // useMemo(() =>  displayNotifications() , [scanDevices])
+  
 
   //it is the bottom Tabs Styles,their are stores in a object form
   var options = {
@@ -82,7 +85,7 @@ for(let i=0; i<filterDevice?.length;i++){
         backgroundColor: '#0092bb',
       },
       headerTintColor: '#ffffff',
-      tabBarBadge:finalList?.length,
+      tabBarBadge:finalList?.length >=1 ?finalList?.length:undefined,
       tabBarBadgeStyle:{marginTop:responsiveWidth(2.5)},
       
       
@@ -91,6 +94,10 @@ for(let i=0; i<filterDevice?.length;i++){
  
     
   };
+
+
+
+
 
   return (
 
