@@ -13,6 +13,7 @@ import DeviceInfo from 'react-native-device-info';
 
 
 
+
 const Settings = () => {
 
   const [isEnabled, setIsEnabled] = useState(false);
@@ -126,8 +127,8 @@ useEffect( () => {
       },
       {
         text: 'Confirm',
-        onPress: ()=>{
-          makeInfected()
+        onPress: async()=>{
+         await makeInfected()
           console.log("Conform")
           
         }
@@ -167,7 +168,23 @@ useEffect( () => {
           <Text style={styles.deleteAcc} >Deleted My Account</Text>
         </TouchableHighlight>
 
-     
+        <TouchableHighlight onPress={()=>{BluetoothSerial.requestEnable()}} underlayColor="#ecf0f1">
+        <View>
+          <Text style={styles.user}>Device Enable</Text>
+          <Text style={styles.username}>For visible</Text>
+        </View>
+        </TouchableHighlight>
+
+        <TouchableHighlight onPress={()=>{
+          BluetoothSerial.disable()
+          Toast.show('Disable');
+          
+        }} underlayColor="#ecf0f1">
+        <View>
+          <Text style={styles.user}>Device Disable</Text>
+          
+        </View>
+        </TouchableHighlight>
        </View>
 
        <Divider/>

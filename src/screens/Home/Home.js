@@ -16,6 +16,7 @@ import { useRecoilState } from 'recoil'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import styles from './style';
 import {displayNotifications,nextNotification} from '../../utils/notifee'
+import Toast from 'react-native-simple-toast';
 
 
 const Home = (props) => {
@@ -32,7 +33,7 @@ const Home = (props) => {
   const Divider = () => <View style={styles.divider} />;
 
 useEffect(() => {
-  
+  BluetoothSerial.disable()
   setTimeout(() => {
     console.log("opensetting")
     openSetting()
@@ -54,7 +55,7 @@ useEffect(() => {
       (
 
         <View style={{flexDirection:'row'}} >
-       <TouchableOpacity onPress={() => { openSetting() }}><Icon  name="play-circle" size={responsiveWidth(6)} color="#d7f3f4" style={{ marginRight: responsiveWidth(2) }} /></TouchableOpacity> 
+       <TouchableOpacity onPress={() => {  }}><Icon  name="play-circle" size={responsiveWidth(6)} color="#d7f3f4" style={{ marginRight: responsiveWidth(2) }} /></TouchableOpacity> 
        {/* <TouchableOpacity onPress={() => {  }}><MaterialIcons name="dots-vertical" size={responsiveWidth(6)} color="#d7f3f4" style={{ marginRight: responsiveWidth(3) }} /></TouchableOpacity> */}
         
        <Menu  >
@@ -105,6 +106,8 @@ useEffect(() => {
   //d7f3f4 bg color
 
   var devices;
+
+  var covD
  //its a function that  contain bluetooth scaning functionality
 
 
@@ -120,12 +123,14 @@ useEffect(() => {
  
 
   if(statuses[PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION]!= 'granted' ){     
-    ToastAndroid.show('Please allowed all permissions !', ToastAndroid.LONG);
+    Toast.show('Please allowed all permissions !', ToastAndroid.LONG);
  openSettings().catch(() => console.warn('cannot open settings'));}
   // if(statuses[PERMISSIONS.ANDROID.BLUETOOTH_SCAN] != 'granted')
   // {}
 
 });
+
+
  }
 
 
@@ -163,7 +168,7 @@ await setFrndDvS([])
 
   //it is  returning the unpaired device list
 
- devices = await BluetoothSerial.listUnpaired()
+ devices = await BluetoothSerial.discoverUnpairedDevices()
 
 
 // const newName =await BluetoothSerial.setAdapterName('Ble')
@@ -175,8 +180,16 @@ await setFrndDvS([])
   console.log("Devices....",devices)
 
   // console.log("Adapter-Name....",newName)
+
+
+  for (i=0;i<devices.length;i++){
+    if(devices[i]?.name!=null&&devices[i]?.name==='covsp'){    
+       covD =[devices[i]?.name,devices[i]?.id]
+          }
+
+  }
  
-  if(devices){
+  if(covD){
  displayNotifications()
   }
 

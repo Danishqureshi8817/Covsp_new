@@ -11,6 +11,7 @@ import {
   Modal,
   FlatList,
   ActivityIndicator,
+  Alert
 } from 'react-native';
 import React, {useLayoutEffect, useState, useEffect} from 'react';
 import {FloatingAction} from 'react-native-floating-action';
@@ -18,6 +19,7 @@ import {useNavigation} from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import QRCode from 'react-native-qrcode-svg';
+import Toast from 'react-native-simple-toast';
 
 import {
   responsiveFontSize,
@@ -44,12 +46,17 @@ import {
 import RNAndroidLocationEnabler from 'react-native-android-location-enabler';
 import styles from './style';
 
+import QRCodeScanner from 'react-native-qrcode-scanner';
+import { RNCamera } from 'react-native-camera';
+
+
 const Friends = () => {
   const navigation = useNavigation();
   const window = useWindowDimensions();
 
   const [visible, setVisible] = useState(false);
   const [visibleQRCode, setVisibleQRCode] = useState(false);
+  const [visibleQRScan, setVisibleQRScan] = useState(false);
   const [deviceStore, setDeviceStore] = useState([]);
   const [availableFriend, setAvailableFriend] = useState(null);
   const [refres, setRefres] = useState(false);
@@ -59,9 +66,18 @@ const Friends = () => {
 
 
   //Fetch added frinds
+
+  useEffect(() => {
+    userFetch()
+   
+  }, []);
+
   useEffect(() => {
     getFrinds();
+   
   }, [refres]);
+
+
 
   //Headeer Icons
   useLayoutEffect(() => {
@@ -154,13 +170,15 @@ const Friends = () => {
     console.log('Delete prv Effect...', prvDs);
 
     await setAvailableFriend(prvDs);
+
+
   };
 
   var devicess;
 
   //BlueTooth Service
 
-  const bleSearch = async () => {
+  const bleSearch = async (frnd) => {
     console.log('bleSRCH');
 
     await setusersBle([]);
@@ -180,7 +198,7 @@ const Friends = () => {
         //Error
       });
 
-    await setVisible(true);
+    // await setVisible(true);
 
     // await setScan(false)
 
@@ -188,22 +206,22 @@ const Friends = () => {
 
     //it is  returning the unpaired device list
 
-    devicess = await BluetoothSerial.listUnpaired();
+    devicess = await BluetoothSerial.discoverUnpairedDevices();
 
     // const newName =await BluetoothSerial.setAdapterName('Ble')
     // const myDevice = await BluetoothSerial.setAdapterName
 
     // const adress = await devices?.length
 
-    console.log('Devices....', devices);
+    console.log('Devices....', devicess);
 
-    // console.log("Adapter-Name....",newName)
+    console.log("Adapter-Name....",frnd)
 
     //In this step we Store the device list in the UseState Hook in a  Array Form
     for (i = 0; i < devicess.length; i++) {
       // &&devices[i]?.name==='covsp'
 
-      if (devicess[i]?.name != null) {
+      if (devicess[i]?.name != null&&devicess[i]?.name==frnd ) {
         var name = [devicess[i]?.name, devicess[i]?.id];
 
         // console.log("Devidces ",i,devices[i]?.name)
@@ -224,19 +242,27 @@ const Friends = () => {
 
   console.log('userble..Friend', usersBle);
 
+
   //Floatinf Button Actions
   const actions = [
+    // {
+    //   text: 'Add Friend',
+    //   icon: require('../../assets/images/add.png'),
+    //   name: 'Add',
+    //   position: 3,
+    //   color: '#0092bb',
+    // },
     {
-      text: 'Add Friend',
-      icon: require('../../assets/images/add.png'),
-      name: 'Add',
+      text: 'Display QR Code',
+      icon: require('../../assets/images/qr.png'),
+      name: 'qrcode',
       position: 1,
       color: '#0092bb',
     },
     {
-      text: 'QR Code',
+      text: 'Scan QR Code',
       icon: require('../../assets/images/qrscanner.png'),
-      name: 'qrcode',
+      name: 'scanqrcode',
       position: 2,
       color: '#0092bb',
     },
@@ -245,13 +271,101 @@ const Friends = () => {
 
  
 const  qrGenerate = async() => {
-  await userFetch()
+  let n
+// await userFetch()
 
-  // await BluetoothSerial.setAdapterName(userName)
+const onBle = async() =>{
+  await BluetoothSerial.requestEnable();
+  // await setVisibleQRCode(true)
+}
 
 
-//  await console.log("bleAdreess",userName)
-await setVisibleQRCode(true)
+ const isEnabled = await BluetoothSerial.isEnabled();
+ console.log("bluetooth status",isEnabled)
+
+if(isEnabled){
+  await BluetoothSerial.disable()
+  await onBle()
+ 
+}
+else{
+  await BluetoothSerial.requestEnable();
+  n = await BluetoothSerial.setAdapterName(userInfo?.givenName)
+  await setVisibleQRCode(true)
+}
+
+
+ await console.log("bleAdreess",n)
+
+
+
+}
+
+const scanQRCode = async() => {
+
+  setVisibleQRScan(true)
+
+
+}
+
+const addBle = async ()=>{
+// let dvs =[]
+await console.log("size devicess",usersBle?.length)
+var ss = usersBle?.length
+if(ss>=1){
+  for(var vl of usersBle){
+   await console.log("Add Ble...",vl)
+  // dvs=[...dvs,...vl]
+  addDevices(vl[0],vl[1])
+  }
+  setVisibleQRScan(false)
+  }else{
+    Toast.show('Please Try Again');
+    setVisibleQRScan(false) 
+   }
+  // console.log("Add Ble...dvS",dvs[0])
+         
+}
+
+
+const onSuccess = async (e) => {
+
+let n = e.data
+
+  
+  await bleSearch(n)
+
+  Alert.alert(
+       
+    'QR Code read Successfuly',
+    `Please click Close `,
+    [
+      {
+        text: 'Close',
+        onPress: ()=>{
+           setVisibleQRScan(false)
+        }
+      },
+      {
+        text: 'Add',
+        onPress: ()=>{
+         
+          addBle()
+          
+        }
+      },
+      
+
+    ],
+       {
+        cancelable:true,
+        onDismiss: () => console.log("cancel alert setting")
+       }
+
+   )
+  
+   console.log("Scaner",e.data)
+
 }
 
 console.log("bleAdreessII",userInfo)
@@ -303,6 +417,7 @@ console.log("bleAdreessII",userInfo)
     await console.log('addDevices.. Lttt', ltt);
 
     setVisible(false);
+    Toast.show('Your Friend Add Successfully!');
   };
 
   // its show the added frind list
@@ -472,6 +587,9 @@ console.log("bleAdreessII",userInfo)
             } else if (name === 'qrcode') {
                 qrGenerate()
             }
+            else if (name === 'scanqrcode') {
+                scanQRCode()
+            }
           }}
         />
 
@@ -576,7 +694,7 @@ console.log("bleAdreessII",userInfo)
 
 
                   <QRCode
-                    value={userInfo?.email}
+                    value={userInfo?.givenName}
                      size={responsiveWidth(40)}
                     
                     />
@@ -610,6 +728,87 @@ console.log("bleAdreessII",userInfo)
           </View>
         </Modal>
         {/* Model QR Code*/}
+
+
+                      {/* Model Scan QR Code */}
+                      <Modal transparent={true} visible={visibleQRScan}>
+          <View
+            style={{
+              backgroundColor: '#000000aa',
+              flex: 1,
+              alignItems: 'center',
+              // padding: responsiveWidth(10),
+              justifyContent:'center'
+            }}>
+            <View
+              style={{
+                backgroundColor: '#d7f3f4',
+                borderRadius: responsiveWidth(3),
+                position: 'relative',
+                // marginTop: window.height * 0.1,
+              }}>
+              <Icon
+                name="close"
+                size={responsiveWidth(6)}
+                onPress={() => {
+                  setVisibleQRScan(false);
+                }}
+                color="#000"
+                style={{
+                  marginRight: responsiveWidth(2),
+                  position: 'absolute',
+                  right: 0,
+                }}
+              />
+           
+              <View
+                style={{
+                  // padding: responsiveWidth(5),
+                  // marginTop: responsiveWidth(1),
+                  width: window.width * 0.9,
+                  height: window.height * 0.3,
+                  // alignSelf:'center'
+                  justifyContent:'center',
+                  alignItems:'center'
+                }}>
+
+<Text
+                  style={[
+                    styles.textMain,
+                    { marginBottom: responsiveWidth(2)},
+                  ]}>
+                Your Device ready to scanning
+                </Text>
+               
+               <QRCodeScanner
+        onRead={(e)=>onSuccess(e)}
+
+        // flashMode={RNCamera.Constants.FlashMode.torch}
+        // topContent={
+        //   <Text style={styles.centerText}>
+        //     Go to{' '}
+        //     <Text style={styles.textBold}>wikipedia.org/wiki/QR_code</Text> on
+        //     your computer and scan the QR code.
+        //   </Text>
+        // }
+        // bottomContent={
+        //   <TouchableOpacity style={styles.buttonTouchable}>
+        //     <Text style={styles.buttonText}>OK. Got it!</Text>
+        //   </TouchableOpacity>
+        // }
+    
+      />
+
+
+                
+              </View>
+              
+
+            </View>
+          </View>
+        </Modal>
+        {/* Model Scan QR Code*/}
+
       </KeyboardAvoidingView>
     </View>
   );

@@ -28,6 +28,12 @@
     <!-- Needed if your app makes the current device discoverable to other Bluetooth devices. -->
     <uses-permission android:name="android.permission.BLUETOOTH_ADVERTISE" />
 
+    //QR Code Scan
+     <uses-permission android:name="android.permission.VIBRATE"/>
+     <!-- Required -->
+<uses-permission android:name="android.permission.CAMERA" />
+
+
 
     <application
       android:name=".MainApplication"

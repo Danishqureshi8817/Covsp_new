@@ -131,14 +131,14 @@ for( var val of finalList){
 for(i=0;i<prvDevices?.length;i++){
 
 if(val[1]==prvDevices[i][1]){
-  // console.log("friend with covsp in forr prvDevice",prvDevices[i][1],val[1])
+  console.log("friend with covsp in forr prvDevice",prvDevices[i][1],val[1])
   // frndDv.push(val)
 
   break;
   }
 
 }
-
+console.log("friend with covsp in i value",i,prvDevices?.length)
 if(i===prvDevices?.length){
 
   console.log("friend with covsp in i value",i,prvDevices?.length)
@@ -153,19 +153,17 @@ console.log('frvDv Alert',frndDv)
 
 
 
-const deleteDevice = async (id,name) => {
-  console.log('delete calling....',id,name)
-  let listRemoved=finalList.filter((val)=>{
-    return val[1]!=id
-  })
 
-  console.log('delete list calling....',listRemoved)
-
-}
 
 let newFinalList
-
-    newFinalList=frndDv.length==0?finalList:frndDv
+   
+if(prvDevices?.length==1){
+  newFinalList=frndDv
+}
+else{
+  newFinalList=frndDv.length==0?finalList:frndDv
+}
+  
 
 console.log("New finalList Alert",newFinalList)
 

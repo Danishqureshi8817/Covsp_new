@@ -26,7 +26,7 @@ export const displayNotifications = async() =>{
               color:'#e1b12c',
               //local Image
               largeIcon: require('../assets/icon.png'),
-              smallIcon: 'ic_launcher' , // optional, defaults to 'ic_launcher'.
+              //smallIcon: 'ic_launcher' , // optional, defaults to 'ic_launcher'.
               // pressAction is needed if you want the notification to open the app when pressed
               pressAction: {
                 id: 'default',
@@ -61,7 +61,7 @@ export const displayNotifications = async() =>{
           color:'red',
           //local Image
           largeIcon: require('../assets/icon.png'),
-          smallIcon: 'ic_launcher' , // optional, defaults to 'ic_launcher'.
+          //smallIcon: 'ic_launcher' , // optional, defaults to 'ic_launcher'.
           // pressAction is needed if you want the notification to open the app when pressed
           pressAction: {
             id: 'default',

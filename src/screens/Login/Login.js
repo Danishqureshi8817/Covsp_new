@@ -82,7 +82,7 @@ console.log("google data",userInfo?.user?.name)
        <Image source={require('../../assets/icon.png')} style={styles.logo} />
 <View>
 <Text style={styles.textWl}>Welcome</Text>
-<Text style={styles.textCov}>CovSp </Text>
+<Text style={styles.textCov}>Shield </Text>
 </View>
      <TouchableOpacity style={styles.buttonMain} onPress={() =>{signIn()}} >
 
