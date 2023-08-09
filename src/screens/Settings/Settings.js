@@ -177,7 +177,7 @@ useEffect( () => {
 
         <TouchableHighlight onPress={()=>{
           BluetoothSerial.disable()
-          Toast.show('Disable');
+          Toast.show('Please Turn off bluetooth if not off');
           
         }} underlayColor="#ecf0f1">
         <View>

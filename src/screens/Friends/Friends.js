@@ -11,7 +11,8 @@ import {
   Modal,
   FlatList,
   ActivityIndicator,
-  Alert
+  Alert,
+  
 } from 'react-native';
 import React, {useLayoutEffect, useState, useEffect} from 'react';
 import {FloatingAction} from 'react-native-floating-action';
@@ -48,6 +49,8 @@ import styles from './style';
 
 import QRCodeScanner from 'react-native-qrcode-scanner';
 import { RNCamera } from 'react-native-camera';
+import Loader from '../../components/Loader'
+import Share from 'react-native-share';
 
 
 const Friends = () => {
@@ -63,7 +66,9 @@ const Friends = () => {
   const [clear, setClear] = useState(false);
   const [usersBle, setusersBle] = useState([]);
   const [userInfo, setUserInfo] = useState(null);
-
+  const [loadingStatus, setLoadingStatus] = useState(false)
+  const [reGt, setReGt] = useState(true)
+  const [QRImage, setQRImage] = useState('')
 
   //Fetch added frinds
 
@@ -84,17 +89,7 @@ const Friends = () => {
     navigation.setOptions({
       headerRight: () => (
         <View style={{flexDirection: 'row'}}>
-          <TouchableOpacity
-            onPress={() => {
-              clearFriends();
-            }}>
-            <MaterialIcons
-              name="delete-forever"
-              size={responsiveWidth(6)}
-              color="#d7f3f4"
-              style={{marginRight: responsiveWidth(2)}}
-            />
-          </TouchableOpacity>
+         
           {/* <TouchableOpacity onPress={() => {  }}><MaterialIcons name="dots-vertical" size={responsiveWidth(6)} color="#d7f3f4" style={{ marginRight: responsiveWidth(3) }} /></TouchableOpacity> */}
 
           <Menu>
@@ -160,16 +155,26 @@ const Friends = () => {
   };
 
   //Remove All friends from AsyncStorage
-  const clearFriends = async () => {
-    await AsyncStorage.removeItem('Devices');
+  const clearFriends = async (CIndex) => {
+    // await AsyncStorage.getItem('Devices');
+     console.warn("CI",CIndex)
+    const tempDv = availableFriend;
+    
+    const selectedDv = tempDv.filter((item,ind) => {
+      return ind != CIndex
+    })
 
-    console.warn('delete');
-    let prvD = await AsyncStorage.getItem('Devices');
-    let prvDs = JSON.parse(prvD);
+    await setAvailableFriend(selectedDv);
 
-    console.log('Delete prv Effect...', prvDs);
+    await AsyncStorage.setItem('Devices',JSON.stringify(selectedDv))
 
-    await setAvailableFriend(prvDs);
+    // console.warn('delete');
+    // let prvD = await AsyncStorage.getItem('Devices');
+    // let prvDs = JSON.parse(prvD);
+
+    // console.log('Delete prv Effect...', prvDs);
+
+    // await setAvailableFriend(prvDs);
 
 
   };
@@ -180,7 +185,7 @@ const Friends = () => {
 
   const bleSearch = async (frnd) => {
     console.log('bleSRCH');
-
+await setReGt(true)
     await setusersBle([]);
 
     //it shows the popup to turn on the Bluetooth
@@ -198,9 +203,7 @@ const Friends = () => {
         //Error
       });
 
-    // await setVisible(true);
-
-    // await setScan(false)
+    
 
     console.log('Devices...scaning ');
 
@@ -208,8 +211,7 @@ const Friends = () => {
 
     devicess = await BluetoothSerial.discoverUnpairedDevices();
 
-    // const newName =await BluetoothSerial.setAdapterName('Ble')
-    // const myDevice = await BluetoothSerial.setAdapterName
+  
 
     // const adress = await devices?.length
 
@@ -223,18 +225,20 @@ const Friends = () => {
 
       if (devicess[i]?.name != null&&devicess[i]?.name==frnd ) {
         var name = [devicess[i]?.name, devicess[i]?.id];
+          setReGt(false)
 
+        addDevices(devicess[i]?.name, devicess[i]?.id)
         // console.log("Devidces ",i,devices[i]?.name)
 
         setusersBle(prevState => {
           return [...prevState, name];
         });
+
+       
       }
+
     }
-
-    // console.log("Devices....Size",adress)
-
-    // await setScan(true)
+  
 
     //By this Stop the scaning
     await BluetoothSerial.cancelDiscovery();
@@ -245,13 +249,7 @@ const Friends = () => {
 
   //Floatinf Button Actions
   const actions = [
-    // {
-    //   text: 'Add Friend',
-    //   icon: require('../../assets/images/add.png'),
-    //   name: 'Add',
-    //   position: 3,
-    //   color: '#0092bb',
-    // },
+
     {
       text: 'Display QR Code',
       icon: require('../../assets/images/qr.png'),
@@ -274,10 +272,6 @@ const  qrGenerate = async() => {
   let n
 // await userFetch()
 
-const onBle = async() =>{
-  await BluetoothSerial.requestEnable();
-  // await setVisibleQRCode(true)
-}
 
 
  const isEnabled = await BluetoothSerial.isEnabled();
@@ -285,8 +279,8 @@ const onBle = async() =>{
 
 if(isEnabled){
   await BluetoothSerial.disable()
-  await onBle()
- 
+  
+  Toast.show('Please Turn off bluetooth if not off');
 }
 else{
   await BluetoothSerial.requestEnable();
@@ -301,44 +295,54 @@ else{
 
 }
 
+//Share QR Code 
+
+const shareQR = () => {
+  
+  QRImage.toDataURL((data) => {
+
+    const shareImageBase64 = {
+       title:'QR',
+       message: "Here is my QR code!",
+       url:`data:image/jpeg;base64,${data}`
+    };
+     setQRImage(String(shareImageBase64.url));
+     Share.open(shareImageBase64)
+  })
+}
+
 const scanQRCode = async() => {
+  await setusersBle([])
 
   setVisibleQRScan(true)
 
 
 }
 
-const addBle = async ()=>{
-// let dvs =[]
-await console.log("size devicess",usersBle?.length)
-var ss = usersBle?.length
-if(ss>=1){
-  for(var vl of usersBle){
-   await console.log("Add Ble...",vl)
-  // dvs=[...dvs,...vl]
-  addDevices(vl[0],vl[1])
-  }
-  setVisibleQRScan(false)
-  }else{
-    Toast.show('Please Try Again');
-    setVisibleQRScan(false) 
-   }
-  // console.log("Add Ble...dvS",dvs[0])
-         
-}
+
+
+//
 
 
 const onSuccess = async (e) => {
+
+  await setLoadingStatus(true)
+  
 
 let n = e.data
 
   
   await bleSearch(n)
 
+  await setLoadingStatus(false)
+
+ 
+ 
+
   Alert.alert(
        
     'QR Code read Successfuly',
-    `Please click Close `,
+     `Please click Close`,
     [
       {
         text: 'Close',
@@ -346,14 +350,7 @@ let n = e.data
            setVisibleQRScan(false)
         }
       },
-      {
-        text: 'Add',
-        onPress: ()=>{
-         
-          addBle()
-          
-        }
-      },
+  
       
 
     ],
@@ -363,24 +360,23 @@ let n = e.data
        }
 
    )
+   if(reGt){
   
+    Toast.show('Please Try Again ,Regenerate your friend QRCode');
+ 
+  }
    console.log("Scaner",e.data)
 
 }
 
-console.log("bleAdreessII",userInfo)
 
 
-  const devices = [
-    ['danish', 1258],
-    ['mummy', 2589],
-    ['abhisehk', 3692],
-    ['papa', 7412],
-  ];
+
+
 
   // this function is checking previous friends available or not ,
   const prvAddDevc = async select => {
-    // let demo =[['danish',1258],['mummy',2589],['abhisehk',3692]]
+
     let prvDevices = await AsyncStorage.getItem('Devices');
     let prvDv = JSON.parse(prvDevices);
 
@@ -407,8 +403,15 @@ console.log("bleAdreessII",userInfo)
 
   //by this devices add in friend list
   const addDevices = async (name, id) => {
+   let date = await new Date();
+   const weekday = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+     
+     let dateH=  `${date.getDate()}/${weekday[date.getDay()]} - ${date.getHours()}:${date.getMinutes()}`
+    
+    
     await setDeviceStore([]);
-    let select = [name, id];
+    let select = [name, id,dateH];
+ 
 
     await prvAddDevc(select);
 
@@ -422,7 +425,7 @@ console.log("bleAdreessII",userInfo)
 
   // its show the added frind list
   const renderMain = props => {
-    console.log('main scren frinds', props.item);
+    console.log('main scren frinds', props.index);
     return (
       <>
         <View
@@ -444,93 +447,39 @@ console.log("bleAdreessII",userInfo)
               gap: responsiveWidth(2),
             }}>
             <Text
-              style={{fontSize: responsiveFontSize(1.9), fontWeight: '500'}}>
+              style={{fontSize: responsiveFontSize(1.9), fontWeight: '500',color:'#000'}}>
               {props?.index + 1}.
             </Text>
             <Text
               style={{
                 textTransform: 'capitalize',
-                fontSize: responsiveFontSize(1.9),
+                fontSize: responsiveFontSize(1.9),color:'#000'
               }}>
               {props?.item[0]}
             </Text>
-            <Text style={{fontSize: responsiveFontSize(1.9)}}>
+            <Text style={{fontSize: responsiveFontSize(1.9),color:'#000'}}>
               {props?.item[1]}
             </Text>
+
+            <Text style={{fontSize: responsiveFontSize(1.9)}}>
+              {props?.item[2]}
+            </Text>
+
+            <MaterialIcons
+              name="delete-forever"
+              size={responsiveWidth(6)}
+              color="#0092bb"
+              style={{marginRight: responsiveWidth(2)}}
+              onPress={()=>{clearFriends(props.index)}}
+            />
+
           </View>
         </View>
       </>
     );
   };
 
-  //its show the  available frinds around
-  const renderItem = props => {
-    return (
-      <Item
-        item={props.item[0]}
-        id={props.item[1]}
-        num={props.index}
-        onPress={() => {
-          addDevices(props.item[0], props.item[1]);
-        }}
-      />
-    );
-  };
 
-  //this component has called in renderitem
-  const Item = ({item, onPress, num, id}) => {
-    // console.log("flatlist item",)
-
-    return (
-      <>
-        <TouchableOpacity
-          onPress={onPress}
-          style={{
-            padding: responsiveWidth(2),
-            borderWidth: 1,
-            marginBottom: responsiveWidth(2),
-            borderColor: '#0092bb',
-            borderRadius: responsiveWidth(2),
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-          }}>
-          <Text style={{fontWeight: '500', textTransform: 'capitalize'}}>
-            {item}
-          </Text>
-          <Text style={{fontWeight: '500', textTransform: 'capitalize'}}>
-            {id}
-          </Text>
-          <Text style={styles.textMain}>Click To Add</Text>
-        </TouchableOpacity>
-      </>
-    );
-  };
-
-  // when will devices not available around so this empty component show
-  const EmptyText = () => {
-    return (
-      <View style={{flex: 1, gap: responsiveWidth(2)}}>
-        <Text
-          style={{
-            fontSize: responsiveFontSize(2.1),
-            fontWeight: 'bold',
-            alignSelf: 'center',
-          }}>
-          No Devices Available
-        </Text>
-        <Text
-          style={{
-            fontSize: responsiveFontSize(2.1),
-            fontWeight: 'bold',
-            alignSelf: 'center',
-          }}>
-          Please Wait
-        </Text>
-
-        <ActivityIndicator size="large" color={'#0092bb'} />
-      </View>
-    );
-  };
 
   //when friends will  not available in friend list  so this empty component show
 
@@ -555,14 +504,15 @@ console.log("bleAdreessII",userInfo)
   return (
     <View style={{flex: 1, backgroundColor: '#d7f3f4'}}>
       <KeyboardAvoidingView style={styles.container} behavior="padding">
-        {availableFriend !== null ? (
+      <Loader loadingStatus = {loadingStatus} />
+        {availableFriend != 0 ? (
           <Text
             style={{
               alignSelf: 'center',
               fontSize: responsiveFontSize(2.1),
               fontWeight: '500',
             }}>
-            Friend List
+            Friend List 
           </Text>
         ) : (
           ''
@@ -593,61 +543,7 @@ console.log("bleAdreessII",userInfo)
           }}
         />
 
-        {/* Model */}
-        <Modal transparent={true} visible={visible}>
-          <View
-            style={{
-              backgroundColor: '#000000aa',
-              flex: 1,
-              alignItems: 'center',
-              padding: responsiveWidth(10),
-            }}>
-            <View
-              style={{
-                backgroundColor: '#d7f3f4',
-                borderRadius: responsiveWidth(3),
-                position: 'relative',
-                marginTop: window.height * 0.1,
-              }}>
-              <Icon
-                name="close"
-                size={responsiveWidth(6)}
-                onPress={() => {
-                  setVisible(false);
-                }}
-                color="#000"
-                style={{
-                  marginRight: responsiveWidth(2),
-                  position: 'absolute',
-                  right: 0,
-                }}
-              />
-              <View
-                style={{
-                  padding: responsiveWidth(5),
-                  marginTop: responsiveWidth(1),
-                  width: window.width * 0.9,
-                  height: window.height * 0.6,
-                }}>
-                <Text
-                  style={[
-                    styles.textMain,
-                    {alignSelf: 'center', marginBottom: responsiveWidth(2)},
-                  ]}>
-                  Add Your Friend
-                </Text>
-
-                <FlatList
-                  data={usersBle}
-                  renderItem={renderItem}
-                  ListEmptyComponent={EmptyText}
-                  showsVerticalScrollIndicator={false}
-                />
-              </View>
-            </View>
-          </View>
-        </Modal>
-        {/* Model */}
+   
 
                 {/* Model QR Code */}
        <Modal transparent={true} visible={visibleQRCode}>
@@ -696,9 +592,13 @@ console.log("bleAdreessII",userInfo)
                   <QRCode
                     value={userInfo?.givenName}
                      size={responsiveWidth(40)}
+
+                  
+                     getRef={(ref)=> setQRImage(ref)}
                     
                     />
               </View>
+              
               <Text
                   style={[
                     styles.textMain,
@@ -716,11 +616,17 @@ console.log("bleAdreessII",userInfo)
                 <Text
                   style={[
                     styles.textMain,
-                    { marginBottom:responsiveWidth(5)},
+                
                    
                   ]}>
                camera to add you as a close friend
                 </Text>
+                <TouchableOpacity onPress={()=>{shareQR()}} style={{backgroundColor:'#0092bb',alignSelf:'center',paddingHorizontal:responsiveWidth(10),
+                paddingVertical:responsiveWidth(2),borderRadius:responsiveWidth(1),marginVertical:responsiveWidth(3),flexDirection:'row',gap:responsiveWidth(3),alignItems:'center'}} >
+                  <Text style={{color:'#ffffff',fontSize:responsiveFontSize(2.1)}} >Share</Text>
+                  <Icon  name="share-social" size={responsiveWidth(6)}  color="#ffffff"  />
+                  
+                 </TouchableOpacity>
 
 
 
@@ -765,17 +671,18 @@ console.log("bleAdreessII",userInfo)
                 style={{
                   // padding: responsiveWidth(5),
                   // marginTop: responsiveWidth(1),
-                  width: window.width * 0.9,
-                  height: window.height * 0.3,
+                  width: window.width * 0.8,
+                  height: window.height * 0.5,
                   // alignSelf:'center'
                   justifyContent:'center',
-                  alignItems:'center'
+                  alignItems:'center',
+                  overflow:'hidden'
                 }}>
 
-<Text
+                   <Text
                   style={[
                     styles.textMain,
-                    { marginBottom: responsiveWidth(2)},
+                    { marginBottom: responsiveWidth(2),textAlign:'center'},
                   ]}>
                 Your Device ready to scanning
                 </Text>
