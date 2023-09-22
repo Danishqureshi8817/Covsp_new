@@ -65,17 +65,17 @@ const OnboardingScreen = () => {
       pages={[
         {
           backgroundColor: '#0092bb',
-          image: <Image source={require('../../assets/images/Welcome.png')} className="w-80 h-72 object-contain" style={{width:responsiveWidth(120),height:responsiveHeight(40),resizeMode:'contain'}}/>,
-          title: 'Welcome to CovSP!',
-          subtitle: 'CovSP (Covid Safety Protocol) Help stop the spread by updating your data. When outside the home, stay at least six feet away from other people, and avoid groups',
+          image: <Image source={require('../../assets/images/welcom.png')} className="w-80 h-72 object-contain" style={{width:responsiveWidth(120),height:responsiveHeight(40),resizeMode:'contain'}}/>,
+          title: 'Welcome to Armor App',
+          subtitle: 'Armor App helps in Identifying potential risk of getting infected by covid and stops spread of covid by turning Bluetooth on in the mobile device. Armor app sends notifications to the user about infected persons in 6 feet distance.',
           titleStyles:{color:'white',fontSize:30},
           subTitleStyles:{color:'white',fontSize:17,textAlign:'center'}
         },
         {
             backgroundColor: '#0092bb',
-            image: <Image source={require('../../assets/images/Welcome2.png')} style={{width:responsiveWidth(120),height:responsiveHeight(40),resizeMode:'contain'}}/>,
+            image: <Image source={require('../../assets/images/welcom2.png')} style={{width:responsiveWidth(120),height:responsiveHeight(40),resizeMode:'contain'}}/>,
             title: 'How does it works?',
-            subtitle: 'CovSP uses Data of your contacts and loved ones has the app installed. using the data App warns you when effected person is update their status in the app',
+            subtitle: 'This application uses Bluetooth technology to scan for devices in 6 feet distance, they also has the application installed and exchange data about users covid illness information.',
             titleStyles:{color:'white',fontSize:30},
             subTitleStyles:{color:'white',fontSize:17,textAlign:'center'}
           },

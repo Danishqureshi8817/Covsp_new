@@ -17,6 +17,9 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import styles from './style';
 import {displayNotifications,nextNotification} from '../../utils/notifee'
 import Toast from 'react-native-simple-toast';
+// import BluetoothSerial from 'react-native-bluetooth-serial-next-bag';
+
+
 
 
 const Home = (props) => {
@@ -25,6 +28,8 @@ const Home = (props) => {
   const [scan, setScan] = useState(true)
   const [usersBle, setusersBle] = useState([])
   const [scanDevices, setScanDevices] = useRecoilState(scanDevice);
+
+
 
 
   const [frndDvS, setFrndDvS] = useState([])
@@ -189,9 +194,9 @@ await setFrndDvS([])
 
   }
  
-  if(covD){
- displayNotifications()
-  }
+//   if(covD){
+//  displayNotifications()
+//   }
 
 
 
@@ -249,7 +254,7 @@ console.log("userble..",usersBle)
    <View style={styles.container}>
     <KeyboardAvoidingView behavior="padding">
 
-    { scan ?  <Image source={require('../../assets/images/il_shieldanim_avatar_1.png')} style={styles.mainImg} /> :
+    { scan ?  <Image source={require('../../assets/images/hom.png')} style={styles.mainImgIcon} /> :
         
     <Image source={require('../../assets/images/scaningGif.gif')} style={styles.mainImg} /> }
 

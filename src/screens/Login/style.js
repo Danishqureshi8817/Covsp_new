@@ -33,8 +33,8 @@ export default styles = StyleSheet.create({
 
     },
     logo:{
-        width:responsiveWidth(20),
-        height:responsiveHeight(10),
+        width:responsiveWidth(90),
+        height:responsiveHeight(25),
         resizeMode:'contain'
     },
     textWl:{

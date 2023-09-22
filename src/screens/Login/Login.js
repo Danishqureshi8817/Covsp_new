@@ -79,10 +79,10 @@ console.log("google data",userInfo?.user?.name)
 
     //It is main Ui login screen
     <View style={styles.mainContainer} >
-       <Image source={require('../../assets/icon.png')} style={styles.logo} />
+       <Image source={require('../../assets/images/login.png')} style={styles.logo} />
 <View>
 <Text style={styles.textWl}>Welcome</Text>
-<Text style={styles.textCov}>Shield </Text>
+<Text style={styles.textCov}>Armor</Text>
 </View>
      <TouchableOpacity style={styles.buttonMain} onPress={() =>{signIn()}} >
 

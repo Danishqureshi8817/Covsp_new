@@ -15,6 +15,12 @@ export default styles = StyleSheet.create({
       resizeMode:'contain',
       alignSelf:'center'
     },
+    mainImgIcon:{
+      width:responsiveWidth(140),
+      height:responsiveHeight(70),
+      resizeMode:'contain',
+      alignSelf:'center'
+    },
     floatingButton:{ 
     
       marginRight: responsiveWidth(2),

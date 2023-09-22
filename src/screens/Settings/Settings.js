@@ -21,9 +21,12 @@ const Settings = () => {
   const [userInfo, setUserInfo] = useState(null)
 
   const [loginStatus, setLoginStatus] = useRecoilState(loginState);
+  const [marked, setMarked] = useState(false)
 
   const navigation = useNavigation();
  
+  
+
 
   //Fetch Login User Details
   const userFetch = async ()=>{
@@ -59,6 +62,7 @@ useEffect( () => {
       await setLoginStatus(false)
       await BluetoothSerial.enable()
       await console.log("NEw Device name",newName)
+      newName=='covsp'?setMarked(true):setMarked(true)
     
   }
 
@@ -123,6 +127,7 @@ useEffect( () => {
           const newNameChnge =await BluetoothSerial.setAdapterName(userInfo?.name)
           await BluetoothSerial.disable()
          await console.log("Cancel",newNameChnge)
+         setMarked(false)
         }
       },
       {
@@ -157,11 +162,13 @@ useEffect( () => {
 
         <View>
           <Text style={styles.user}>Username</Text>
-          <Text style={styles.username}>{userInfo?.name}</Text>
+          <Text style={styles.username}>{userInfo?.name} {marked && <Text style={{color:'red'}} >Infected</Text>}</Text>
+
         </View>
 
         <TouchableHighlight onPress={()=>{markInfect()}} underlayColor="#ecf0f1">
           <Text style={styles.covid} >Mark as COVID-19 Infected</Text>
+       
         </TouchableHighlight>
 
         <TouchableHighlight onPress={()=>{deleteAccount()}} underlayColor="#ecf0f1">

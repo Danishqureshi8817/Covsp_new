@@ -493,7 +493,7 @@ let n = e.data
           <Text style={styles.textMain}>You have no whitelisted friends</Text>
         </View>
         <Image
-          source={require('../../assets/images/friends.png')}
+          source={require('../../assets/images/friend.png')}
           style={styles.mainImg}
         />
       </>
@@ -611,7 +611,7 @@ let n = e.data
                     styles.textMain,
                    
                   ]}>
-              someone they can scan it with their Covsp
+              someone they can scan it with their Armor
                 </Text>
                 <Text
                   style={[

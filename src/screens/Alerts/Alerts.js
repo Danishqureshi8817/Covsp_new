@@ -1,5 +1,5 @@
 import { useWindowDimensions,ScrollView,Alert, ImageBackground, KeyboardAvoidingView, SafeAreaView, StyleSheet, Text, TouchableOpacity, View,FlatList, ActivityIndicator,ToastAndroid, Platform } from 'react-native'
-import React,{useState,useLayoutEffect,useEffect} from 'react'
+import React,{useState,useLayoutEffect,useEffect,useCallback} from 'react'
 import { responsiveFontSize, responsiveWidth } from 'react-native-responsive-dimensions'
 import { useNavigation,useFocusEffect,useIsFocused } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -9,6 +9,7 @@ import { scanDevice} from '../../store/recoil'
 import { useRecoilState } from 'recoil'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import styles from './style';
+import {displayNotifications,nextNotification} from '../../utils/notifee'
 
 
 const Alerts = () => {
@@ -148,6 +149,7 @@ if(i===prvDevices?.length){
 
 }
 
+
 console.log('frvDv Alert',frndDv)
 
 
@@ -159,14 +161,24 @@ let newFinalList
    
 if(prvDevices?.length==1){
   newFinalList=frndDv
+
 }
 else{
   newFinalList=frndDv.length==0?finalList:frndDv
 }
   
 
-console.log("New finalList Alert",newFinalList)
 
+console.log("New finalList Alert",newFinalList.length)
+
+
+// 
+
+
+if(newFinalList.length===1){
+  displayNotifications()
+
+}
 
 
 const renderItem = (props) => {
@@ -177,7 +189,7 @@ const renderItem = (props) => {
       item={props.item[0]}
       num={props.index}
       onPress={() => {
-        deleteDevice(props.item[1],props.item[0])
+        // cd Desktop 
         setSelectedId(props.item[0])
      
         }}
