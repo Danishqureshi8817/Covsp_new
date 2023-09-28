@@ -30,7 +30,14 @@ const Settings = () => {
 
   //Fetch Login User Details
   const userFetch = async ()=>{
- 
+     
+   let BleFName= await BluetoothSerial.setAdapterName('covsp')
+
+   console.log('bluetth name',BleFName);
+
+     if(BleFName === 'covsp'){
+     setMarked(true)
+     }
 
     try {
       const value = await AsyncStorage.getItem('userDetails');
@@ -125,9 +132,13 @@ useEffect( () => {
         text: 'Uninfected',
         onPress: async()=>{
           const newNameChnge =await BluetoothSerial.setAdapterName(userInfo?.name)
-          await BluetoothSerial.disable()
+      
          await console.log("Cancel",newNameChnge)
-         setMarked(false)
+         newNameChnge===userInfo?.name && await BluetoothSerial.disable()
+        newNameChnge===userInfo?.name ? 
+        setMarked(false)
+        
+        :setMarked(true)
         }
       },
       {
