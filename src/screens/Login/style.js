@@ -1,12 +1,13 @@
 import { StyleSheet } from 'react-native';
 import { responsiveHeight, responsiveWidth, responsiveFontSize } from "react-native-responsive-dimensions";
+import colors from '../../utils/colors';
 
 
 export default styles = StyleSheet.create({
 
     mainContainer:{
         flex:1,
-        backgroundColor:'#0092bb',
+        backgroundColor:colors.onBoarding,
         justifyContent:'center',
         alignItems:'center',
         gap:responsiveWidth(5)
@@ -26,7 +27,7 @@ export default styles = StyleSheet.create({
 
     },
     buttonText:{
-        color:'#0092bb',
+        color:colors.onBoarding,
         alignSelf:'center',
         fontSize:responsiveFontSize(2.1),
         fontWeight:'500'

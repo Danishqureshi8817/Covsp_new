@@ -10,6 +10,7 @@ import { useRecoilState } from 'recoil'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import styles from './style';
 import {displayNotifications,nextNotification} from '../../utils/notifee'
+import colors from '../../utils/colors';
 
 
 const Alerts = () => {
@@ -61,7 +62,7 @@ const Alerts = () => {
         
        <Menu  >
       <MenuTrigger>
-      <MaterialIcons name="dots-vertical" size={responsiveWidth(6)} color="#d7f3f4" style={{ marginRight: responsiveWidth(3) }} />
+      <MaterialIcons name="dots-vertical" size={responsiveWidth(6)} color="#000000" style={{ marginRight: responsiveWidth(3) }} />
       </MenuTrigger>
       
       <MenuOptions customStyles={{
@@ -252,7 +253,7 @@ const EmptyText = () =>{
   return (
   
     //this is the Main Alert Screen UI
-     <View style={{flex:1,backgroundColor:'#d7f3f4'}}>
+     <View style={{flex:1,backgroundColor:colors.alertScreenBackground}}>
 
     <KeyboardAvoidingView style={styles.container} behavior="padding">
  

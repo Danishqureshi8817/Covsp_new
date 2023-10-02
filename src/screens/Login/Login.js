@@ -8,6 +8,7 @@ import { GoogleSignin, statusCodes } from '@react-native-google-signin/google-si
 import Toast from 'react-native-simple-toast';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import styles from './style';
+import colors from '../../utils/colors';
 
 const Login = () => {
 
@@ -87,7 +88,7 @@ console.log("google data",userInfo?.user?.name)
      <TouchableOpacity style={styles.buttonMain} onPress={() =>{signIn()}} >
 
         <Text style={styles.buttonText} >SignIn With Google</Text>
-        <Icon  name="arrow-forward" size={responsiveWidth(6)} color='#0092bb' style={{ marginRight: responsiveWidth(2) }} />
+        <Icon  name="arrow-forward" size={responsiveWidth(6)} color={colors.onBoarding} style={{ marginRight: responsiveWidth(2) }} />
 
      </TouchableOpacity>
 

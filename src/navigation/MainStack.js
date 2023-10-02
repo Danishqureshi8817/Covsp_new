@@ -12,6 +12,7 @@ import Settings from '../screens/Settings/Settings'
 import { onboardingState,loginState } from '../store/recoil'
 import { useRecoilState } from 'recoil'
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import colors from '../utils/colors'
 
 
 // it is native Stack object
@@ -101,8 +102,8 @@ const AuthStack = () => {
   <Stack.Screen name='Tabs' component={Tabs} />
 
   <Stack.Screen name='Settings' component={Settings} options={{headerShown:true,headerStyle: {
-        backgroundColor: '#0092bb',
-      }, headerTintColor:'#ffffff'}} />
+        backgroundColor: colors.alertScreenHeader,
+      }, headerTintColor:'#000000'}} />
 
 
 </Stack.Navigator>

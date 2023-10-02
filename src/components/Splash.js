@@ -1,6 +1,7 @@
 import { StyleSheet, Text, View,ActivityIndicator,Image } from 'react-native'
 import React from 'react'
 import { responsiveHeight, responsiveWidth } from 'react-native-responsive-dimensions'
+import colors from '../utils/colors'
 
 const Loading = () => {
   return (
@@ -18,7 +19,7 @@ const styles = StyleSheet.create({
 
       flex: 1,
       width: '100%',
-      backgroundColor:'#d7f3f4',
+      backgroundColor:colors.onBoarding,
       alignItems: 'center',
       justifyContent:'center',
       position:'relative'

@@ -17,6 +17,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import styles from './style';
 import {displayNotifications,nextNotification} from '../../utils/notifee'
 import Toast from 'react-native-simple-toast';
+import colors from '../../utils/colors';
 // import BluetoothSerial from 'react-native-bluetooth-serial-next-bag';
 
 
@@ -60,12 +61,12 @@ useEffect(() => {
       (
 
         <View style={{flexDirection:'row'}} >
-       <TouchableOpacity onPress={() => {  }}><Icon  name="play-circle" size={responsiveWidth(6)} color="#d7f3f4" style={{ marginRight: responsiveWidth(2) }} /></TouchableOpacity> 
+       <TouchableOpacity onPress={() => {  }}><Icon  name="play-circle" size={responsiveWidth(6)} color={colors.white} style={{ marginRight: responsiveWidth(2) }} /></TouchableOpacity> 
        {/* <TouchableOpacity onPress={() => {  }}><MaterialIcons name="dots-vertical" size={responsiveWidth(6)} color="#d7f3f4" style={{ marginRight: responsiveWidth(3) }} /></TouchableOpacity> */}
         
        <Menu  >
       <MenuTrigger>
-      <MaterialIcons name="dots-vertical" size={responsiveWidth(6)} color="#d7f3f4" style={{ marginRight: responsiveWidth(3) }} />
+      <MaterialIcons name="dots-vertical" size={responsiveWidth(6)} color={colors.white} style={{ marginRight: responsiveWidth(3) }} />
       </MenuTrigger>
       
       <MenuOptions customStyles={{
@@ -141,9 +142,6 @@ useEffect(() => {
 
 
  const Bluetooth =async () => {
-
-
-
     openSetting()
 
 

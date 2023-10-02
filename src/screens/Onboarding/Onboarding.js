@@ -8,6 +8,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import { onboardingState } from '../../store/recoil'
 import { useRecoilState } from 'recoil'
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import colors from '../../utils/colors';
 
 const OnboardingScreen = () => {
 
@@ -64,7 +65,7 @@ const OnboardingScreen = () => {
         //In this step- onboarding ui data
       pages={[
         {
-          backgroundColor: '#0092bb',
+          backgroundColor: colors.onBoarding,
           image: <Image source={require('../../assets/images/welcom.png')} className="w-80 h-72 object-contain" style={{width:responsiveWidth(120),height:responsiveHeight(40),resizeMode:'contain'}}/>,
           title: 'Welcome to Armor App',
           subtitle: 'Armor App helps in Identifying potential risk of getting infected by covid and stops spread of covid by turning Bluetooth on in the mobile device. Armor app sends notifications to the user about infected persons in 6 feet distance.',
@@ -72,7 +73,7 @@ const OnboardingScreen = () => {
           subTitleStyles:{color:'white',fontSize:17,textAlign:'center'}
         },
         {
-            backgroundColor: '#0092bb',
+            backgroundColor:colors.onBoarding,
             image: <Image source={require('../../assets/images/welcom2.png')} style={{width:responsiveWidth(120),height:responsiveHeight(40),resizeMode:'contain'}}/>,
             title: 'How does it works?',
             subtitle: 'This application uses Bluetooth technology to scan for devices in 6 feet distance, they also has the application installed and exchange data about users covid illness information.',

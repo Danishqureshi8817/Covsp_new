@@ -14,6 +14,7 @@ import { scanDevice} from '../store/recoil'
 import { useRecoilState } from 'recoil'
 import {responsiveWidth, responsiveHeight,responsiveFontSize,} from 'react-native-responsive-dimensions';
 import { displayNotifications } from '../utils/notifee';
+import colors from '../utils/colors';
 
 
 
@@ -56,7 +57,7 @@ for(let i=0; i<filterDevice?.length;i++){
         return focused ? <Text style={styles.headerText}>Home</Text> : '';
       },
       headerStyle: {
-        backgroundColor: '#0092bb',
+        backgroundColor: colors.appHeader,
       },
       headerTintColor: '#ffffff',
      
@@ -69,7 +70,7 @@ for(let i=0; i<filterDevice?.length;i++){
         return focused ? <Text style={styles.headerText}>Friends</Text> : '';
       },
       headerStyle: {
-        backgroundColor: '#0092bb',
+        backgroundColor: colors.appHeader,
       },
       headerTintColor: '#ffffff',
    
@@ -82,9 +83,9 @@ for(let i=0; i<filterDevice?.length;i++){
         return focused ? <Text style={styles.headerText}>Alerts</Text> : '';
       },
       headerStyle: {
-        backgroundColor: '#0092bb',
+        backgroundColor: colors.alertScreenHeader,
       },
-      headerTintColor: '#ffffff',
+      headerTintColor: '#000000',
       tabBarBadge:finalList?.length >=1 ?finalList?.length:undefined,
       tabBarBadgeStyle:{marginTop:responsiveWidth(2.5)},
       
@@ -125,7 +126,7 @@ for(let i=0; i<filterDevice?.length;i++){
           );
         },
         tabBarStyle: {
-          backgroundColor: '#0092bb',
+          backgroundColor: colors.bottomTabs,
           paddingHorizontal: responsiveWidth(15),
           height:responsiveWidth(15),
           

@@ -1,10 +1,11 @@
 import { StyleSheet,Dimensions } from 'react-native';
 import { responsiveHeight, responsiveWidth, responsiveFontSize } from "react-native-responsive-dimensions";
+import colors from '../../utils/colors';
 
 export default styles = StyleSheet.create({
     container: {
       flex: 1,
-      backgroundColor:'#d7f3f4',
+      backgroundColor:colors.appBackground,
       // alignItems: 'center',
       position:'relative'
   

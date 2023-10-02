@@ -51,6 +51,7 @@ import QRCodeScanner from 'react-native-qrcode-scanner';
 import { RNCamera } from 'react-native-camera';
 import Loader from '../../components/Loader'
 import Share from 'react-native-share';
+import colors from '../../utils/colors';
 
 
 const Friends = () => {
@@ -97,7 +98,7 @@ const Friends = () => {
               <MaterialIcons
                 name="dots-vertical"
                 size={responsiveWidth(6)}
-                color="#d7f3f4"
+                color={colors.white}
                 style={{marginRight: responsiveWidth(3)}}
               />
             </MenuTrigger>
@@ -502,7 +503,7 @@ let n = e.data
 
   // Main UI
   return (
-    <View style={{flex: 1, backgroundColor: '#d7f3f4'}}>
+    <View style={{flex: 1, backgroundColor: colors.appBackground}}>
       <KeyboardAvoidingView style={styles.container} behavior="padding">
       <Loader loadingStatus = {loadingStatus} />
         {availableFriend != 0 ? (
