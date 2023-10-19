@@ -254,11 +254,11 @@ console.log("userble..",usersBle)
 
     { scan ?  <Image source={require('../../assets/images/hom.png')} style={styles.mainImgIcon} /> :
         
-    <Image source={require('../../assets/images/scaningGif.gif')} style={styles.mainImg} /> }
+    <Image source={require('../../assets/images/scaningGif.gif')} style={[styles.mainImg,{resizeMode:'cover'}]} /> }
 
  
 
-  <TouchableOpacity style={[styles.floatingButton,{right:scan?Dimensions.get('window').width*0.03:Dimensions.get('window').width*0.04,}]} onPress={()=>{Bluetooth()}} >
+  <TouchableOpacity style={[styles.floatingButton,]} onPress={()=>{Bluetooth()}} >
 
 { scan ? <Image source={require('../../assets/images/scanstart.png')} style={{width:responsiveWidth(18),height:responsiveHeight(10),resizeMode:'contain'}}/> :
 <Image source={require('../../assets/images/scanstop.png')} style={{width:responsiveWidth(16),height:responsiveHeight(10),resizeMode:'contain'}}/>}

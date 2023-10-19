@@ -7,14 +7,16 @@ export default styles = StyleSheet.create({
       flex: 1,
       backgroundColor:colors.appBackground,
       // alignItems: 'center',
-      position:'relative'
+      position:'relative',
+
   
     },
     mainImg:{
       width:responsiveWidth(130),
-      height:responsiveHeight(60),
-      resizeMode:'contain',
+      height:Dimensions.get('window').height*0.86,
+   
       alignSelf:'center'
+      
     },
     mainImgIcon:{
       width:responsiveWidth(140),
@@ -27,7 +29,8 @@ export default styles = StyleSheet.create({
       marginRight: responsiveWidth(2),
       position:'absolute',
       // right:Dimensions.get('window').width*0.03,
-      top:Dimensions.get('window').height*0.74,
+      alignSelf:'flex-end',
+      marginTop:responsiveHeight(74)
     
     
       

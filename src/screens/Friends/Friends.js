@@ -12,6 +12,7 @@ import {
   FlatList,
   ActivityIndicator,
   Alert,
+  Pressable,
   
 } from 'react-native';
 import React, {useLayoutEffect, useState, useEffect} from 'react';
@@ -557,7 +558,7 @@ let n = e.data
               alignItems: 'center',
               // padding: responsiveWidth(10),
               justifyContent:'center'
-            }}>
+            }}  >
             <View
               style={{
                 backgroundColor: '#d7f3f4',
@@ -640,15 +641,16 @@ let n = e.data
 
 
                       {/* Model Scan QR Code */}
-                      <Modal transparent={true} visible={visibleQRScan}>
-          <View
+                      <Modal transparent={true} visible={visibleQRScan} >
+          <Pressable
             style={{
               backgroundColor: '#000000aa',
               flex: 1,
               alignItems: 'center',
               // padding: responsiveWidth(10),
               justifyContent:'center'
-            }}>
+
+            }} onPress={()=>{setVisibleQRScan(false)}} >
             <View
               style={{
                 backgroundColor: '#d7f3f4',
@@ -715,7 +717,7 @@ let n = e.data
               
 
             </View>
-          </View>
+          </Pressable>
         </Modal>
         {/* Model Scan QR Code*/}
 
