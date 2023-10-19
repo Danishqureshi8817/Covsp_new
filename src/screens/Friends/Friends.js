@@ -526,6 +526,8 @@ let n = e.data
           showsVerticalScrollIndicator={false}
         />
 
+        {/* Add friend Option Show or Hide By this code */}
+
         <FloatingAction
           showBackground={false}
           actions={actions}
